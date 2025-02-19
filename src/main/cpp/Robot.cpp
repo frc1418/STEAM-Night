@@ -18,7 +18,7 @@
 // if I don't have access to the joysticks or my own, xbox it is
 // xbox = 0
 // joystick = 1
-#define JOYSTICK 0
+#define JOYSTICK 1
 
 using namespace std;
 using namespace frc;
