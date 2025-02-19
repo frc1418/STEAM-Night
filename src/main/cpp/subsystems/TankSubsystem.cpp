@@ -14,14 +14,6 @@
 using namespace rev::spark;
 
 /**
- * Different tank drive modes
- */
-enum TankDriveMode {
-    coasting = 0U,
-    braked   = 1U
-};
-
-/**
  * Tank drive container class
  */
 class TankDrive {
@@ -34,8 +26,8 @@ class TankDrive {
 
     // spark maxes (Leaders are the forward-most motors)
     // we are using CIMs so kBrushed it is
-    SparkMax  leftL{4,  SparkMax::MotorType::kBrushed};
-    SparkMax  leftF{1,  SparkMax::MotorType::kBrushed};
+    SparkMax  leftL{4, SparkMax::MotorType::kBrushed};
+    SparkMax  leftF{1, SparkMax::MotorType::kBrushed};
     SparkMax rightL{2, SparkMax::MotorType::kBrushed};
     SparkMax rightF{3, SparkMax::MotorType::kBrushed};
 
@@ -52,14 +44,14 @@ class TankDrive {
          * @param brake_mode Tank drive braking mode, either Braked or Coasting
          */
         TankDrive(
-            TankDriveMode brake_mode
+            SparkMaxConfig::IdleMode brake_mode
         ) {
             // main sparkmax config
             leftLConfig
                 .SmartCurrentLimit(50)
                 .SetIdleMode(
                     // me when custom enum go brr (it works enums are just integer values)
-                    (SparkMaxConfig::IdleMode) brake_mode 
+                    brake_mode
                 );
             // right side is inverted
             rightLConfig.Apply(leftLConfig).Inverted(true);
@@ -109,6 +101,7 @@ class TankDrive {
          * @param rot   rotation speed
          */
         void arcade(double speed, double rot) {
+
             double fSpeed = speed * speedMultiplier;
             double fRot = rot * rotationMultiplier;
 

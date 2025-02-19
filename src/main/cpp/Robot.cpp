@@ -18,7 +18,7 @@
 // if I don't have access to the joysticks or my own, xbox it is
 // xbox = 0
 // joystick = 1
-#define JOYSTICK 1
+#define JOYSTICK 0
 
 using namespace std;
 using namespace frc;
@@ -26,7 +26,7 @@ using namespace rev::spark;
 
 class Robot : public TimedRobot {
 
-    TankDrive base {TankDriveMode::braked};
+    TankDrive base {SparkMaxConfig::IdleMode::kBrake};
 
     #if JOYSTICK
     Joystick joystick{0};
@@ -71,7 +71,7 @@ class Robot : public TimedRobot {
             #else
 
                 base.arcade(
-                    xbox.GetRightY(), xbox.GetRightX()
+                    xbox.GetRightY(), -xbox.GetRightX()
                 );
 
             #endif
