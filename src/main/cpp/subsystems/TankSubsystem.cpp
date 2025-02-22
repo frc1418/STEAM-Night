@@ -5,6 +5,12 @@
  * @date 2/18/24
  */
 
+/*
+ * NOTE FOR 2/22 PROGRAMMERS:
+ *
+ * This file works as intended. Do not change.
+ */
+
 #ifndef __TANK_SUBSYSTEM__
 #define __TANK_SUBSYSTEM__
 
@@ -50,7 +56,6 @@ class TankDrive {
             leftLConfig
                 .SmartCurrentLimit(50)
                 .SetIdleMode(
-                    // me when custom enum go brr (it works enums are just integer values)
                     brake_mode
                 );
             // right side is inverted

@@ -13,11 +13,12 @@
 #include <frc/XboxController.h>
 #include <frc/TimedRobot.h>
 
-#include "subsystems/TankSubsystem.cpp";
+#include "subsystems/TankSubsystem.cpp"
 
 // if I don't have access to the joysticks or my own, xbox it is
 // xbox = 0
 // joystick = 1
+// NOTE FOR 2/22 PROGRAMMERS: keep this at 1
 #define JOYSTICK 1
 
 using namespace std;
@@ -27,6 +28,17 @@ using namespace rev::spark;
 class Robot : public TimedRobot {
 
     TankDrive base {SparkMaxConfig::IdleMode::kBrake};
+
+    SparkMaxConfig intakeMotorConfig;
+
+    // NOTE FOR 2/22 PROGRAMMERS:
+    //
+    // The first value of this (currently set to `5`) is the CAN id of the intake motor sparkmax.
+    // either set the CAN id of the sparkmax to 5, or set the value in code to be whatever the
+    // sparkmax is.
+    //
+    // This, if the CID is set correctly, should work with the redline motor.
+    SparkMax intakeMotor{5, SparkMax::MotorType::kBrushed};
 
     #if JOYSTICK
     Joystick joystick{0};
@@ -54,7 +66,32 @@ class Robot : public TimedRobot {
 
     public:
 
-        Robot() {}
+        /**
+         * Robot initialization function
+         */
+        Robot() {
+
+            // create config for the intake motor
+            intakeMotorConfig
+                .SmartCurrentLimit(50)
+                .SetIdleMode(
+                    
+                    // NOTE FOR 2/22 PROGRAMMERS:
+                    //
+                    // I have the intake motor set to coast for the moment,
+                    // as I'm not entirely sure how it will affect the gearbox and stuff
+                    // feel free to change this to brake if coast doesn't work the best.
+                    SparkMaxConfig::IdleMode::kCoast
+                );
+            
+            // configure the motor with the config
+            intakeMotor.Configure(
+                intakeMotorConfig,
+                SparkMax::ResetMode::kResetSafeParameters,
+                SparkMax::PersistMode::kNoPersistParameters
+            );
+
+        }
 
         /**
          * Main function
@@ -91,6 +128,28 @@ class Robot : public TimedRobot {
             // speed mode
             if(speedButtonPressed) {
                 toggleSpeed();
+            }
+
+            #if JOYSTICK
+
+                // trigger button on my logitek joystick
+                const bool intakeButtonPressed = joystick.GetRawButton(1);
+
+            #endif
+
+            if(intakeButtonPressed) {
+                intakeMotor.Set(
+                    /*
+                     * NOTE FOR 2/22 PROGRAMMERS:
+                     *
+                     * This is where you might need to change stuff.
+                     * 
+                     * I'm not sure how fast the redline will run, so I intentionally set this low.
+                     * 
+                     * Please increase until you find a suitable speed for it to run.
+                     */
+                    0.05
+                );
             }
         }
 };
