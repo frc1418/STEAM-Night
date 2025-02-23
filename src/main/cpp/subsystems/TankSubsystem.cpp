@@ -5,12 +5,6 @@
  * @date 2/18/24
  */
 
-/*
- * NOTE FOR 2/22 PROGRAMMERS:
- *
- * This file works as intended. Do not change.
- */
-
 #ifndef __TANK_SUBSYSTEM__
 #define __TANK_SUBSYSTEM__
 
@@ -69,22 +63,22 @@ class TankDrive {
             leftL.Configure(
                 leftLConfig,
                 SparkMax::ResetMode::kResetSafeParameters,
-                SparkMax::PersistMode::kNoPersistParameters
+                SparkMax::PersistMode::kPersistParameters
             );
             leftF.Configure(
                 leftFConfig,
                 SparkMax::ResetMode::kResetSafeParameters,
-                SparkMax::PersistMode::kNoPersistParameters
+                SparkMax::PersistMode::kPersistParameters
             );
             rightL.Configure(
                 rightLConfig,
                 SparkMax::ResetMode::kResetSafeParameters,
-                SparkMax::PersistMode::kNoPersistParameters
+                SparkMax::PersistMode::kPersistParameters
             );
             rightF.Configure(
                 rightFConfig,
                 SparkMax::ResetMode::kResetSafeParameters,
-                SparkMax::PersistMode::kNoPersistParameters
+                SparkMax::PersistMode::kPersistParameters
             );
         }
 
