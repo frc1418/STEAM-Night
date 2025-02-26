@@ -8,6 +8,8 @@
 #ifndef __INTAKE_SUBSYSTEM__
 #define __INTAKE_SUBSYSTEM__
 
+#include <ctime>
+
 #include <rev/config/SparkMaxConfig.h>
 #include <rev/SparkMax.h>
 
@@ -24,7 +26,7 @@ class Shooter {
     SparkMax left{5, SparkMax::MotorType::kBrushless};
     SparkMax right{6, SparkMax::MotorType::kBrushless};
 
-    private:
+    int lastShot = 99999999999;
 
     public:
         /**
@@ -76,6 +78,37 @@ class Shooter {
         void setIdle() {
             left.Set(0.0);
             right.Set(0.0);
+        }
+
+        /**
+         * Periodic ticker function that allows for
+         * a specified rate of fire.
+         * This gets called every 20ms, so
+         * `fireTime = 10 * 20ms = 200ms = 0.2s`
+         */
+        void periodic() {
+            const int fireTime = 10;
+
+            if(lastShot < fireTime) {
+                setOutput();
+            } else {
+                setIdle();
+            }
+
+            lastShot++;
+        }
+
+        /**
+         * Shooting method, resets cooldown
+         * `periodic()` gets called every 20ms,
+         * so `cooldown = 60 * 20ms = 1200ms = 1.2s`
+         */
+        void shoot() {
+            const int cooldown = 60;
+
+            if(lastShot > cooldown) {
+                lastShot = 0;
+            }
         }
 
 };

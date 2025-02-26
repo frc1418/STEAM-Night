@@ -106,20 +106,18 @@ class Robot : public TimedRobot {
             #if JOYSTICK
 
                 // trigger button on my logitek joystick
-                const bool outputButtonPressed = joystick.GetRawButton(1);
+                const bool shootButtonPressed = joystick.GetRawButton(1);
 
             #endif
 
 
-            if(outputButtonPressed) {
+            if(shootButtonPressed) {
                 
-                shooter.setOutput();
-
-            } else {
-
-                shooter.setIdle();
+                shooter.shoot();
 
             }
+
+            shooter.periodic();
 
         }
 };
