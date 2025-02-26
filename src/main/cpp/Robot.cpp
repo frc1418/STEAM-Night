@@ -14,6 +14,7 @@
 #include <frc/TimedRobot.h>
 
 #include "subsystems/TankSubsystem.cpp"
+#include "subsystems/ShooterSubsystem.cpp"
 
 // if I don't have access to the joysticks or my own, xbox it is
 // xbox = 0
@@ -28,8 +29,7 @@ class Robot : public TimedRobot {
 
     TankDrive base {SparkMaxConfig::IdleMode::kBrake};
 
-    //SparkMaxConfig intakeMotorConfig;
-    //SparkMax intakeMotor{5, SparkMax::MotorType::kBrushed};
+    Shooter shooter;
 
     #if JOYSTICK
     Joystick joystick{0};
@@ -50,7 +50,7 @@ class Robot : public TimedRobot {
                 is_slow = false;
             } else {
                 // child mode
-                base.setArcadeMultipliers(0.25, 0.35);
+                base.setArcadeMultipliers(0.25, 0.30);
                 is_slow = true;
             }
         }
@@ -63,21 +63,7 @@ class Robot : public TimedRobot {
         Robot() {
 
             toggleSpeed();
-/*
-            // create config for the intake motor
-            intakeMotorConfig
-                .SmartCurrentLimit(50)
-                .SetIdleMode(
-                    SparkMaxConfig::IdleMode::kCoast
-                );
-            
-            // configure the motor with the config
-            intakeMotor.Configure(
-                intakeMotorConfig,
-                SparkMax::ResetMode::kResetSafeParameters,
-                SparkMax::PersistMode::kPersistParameters
-            );
-*/
+
         }
 
         /**
@@ -120,17 +106,21 @@ class Robot : public TimedRobot {
             #if JOYSTICK
 
                 // trigger button on my logitek joystick
-                const bool intakeButtonPressed = joystick.GetRawButton(1);
+                const bool outputButtonPressed = joystick.GetRawButton(1);
 
             #endif
 
-/*
-            if(intakeButtonPressed) {
-                intakeMotor.Set(
-                    0.0
-                );
+
+            if(outputButtonPressed) {
+                
+                shooter.setOutput();
+
+            } else {
+
+                shooter.setIdle();
+
             }
-*/
+
         }
 };
 

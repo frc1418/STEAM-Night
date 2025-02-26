@@ -36,7 +36,7 @@ class TankDrive {
     double rotationMultiplier = 1.0;
 
     public:
-        TankDrive() {}
+        TankDrive(){}
 
         /**
          * Constructor
